@@ -1,0 +1,43 @@
+'''
+Sample specification file for use with PyInstaller
+
+This correctly packages up the non-code resources used by Gooey and
+includes them in the generated application
+
+Instructions:
+
+1. Update REPLACE_ME.py in the Analysis constructor (line 20) with your Python script.
+2. Update the `name` argument in the EXE constructor (line 38) with your program name
+3. Save
+4. Run `pyinstaller pyinstaller_build.py` to build your application
+
+Done!
+'''
+import gooey
+gooey_root = os.path.dirname(gooey.__file__)
+gooey_languages = Tree(os.path.join(gooey_root, 'languages'), prefix = 'gooey/languages')
+gooey_images = Tree(os.path.join(gooey_root, 'images'), prefix = 'gooey/images')
+a = Analysis(['{source_path}'],
+             pathex=['c:\\Python27\\Scripts'],
+             hiddenimports=[],
+             hookspath=None,
+             runtime_hooks=None,
+             )
+pyz = PYZ(a.pure)
+
+options = [('u', None, 'OPTION')]
+
+exe = EXE(pyz,
+          a.scripts,
+          a.binaries,
+          a.zipfiles,
+          a.datas,
+          options,
+          gooey_languages, # Add them in to collected files
+          gooey_images, # Same here.
+          name='{program_name}',
+          debug=False,
+          strip=None,
+          upx=True,
+          console=True,
+          icon=os.path.join(gooey_root, 'images', 'program_icon.ico'))
